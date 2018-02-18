@@ -7,12 +7,12 @@ const App = () => (
   <div>
     <header>
       <Link to="/">Home</Link>
-      <Link to="/about-us">About</Link>
+      <Link to="/about-me">About</Link>
     </header>
 
     <main>
       <Route exact path="/" component={Home} />
-      <Route exact path="/about-us" component={About} />
+      <Route exact path="/about-me" component={About} />
     </main>
   </div>
 )
