@@ -55537,8 +55537,8 @@ var App = function App() {
       null,
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/zhang', component: _busypage2.default }),
       _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/chi', component: _easypage2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/', component: _easypage2.default }),
-      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/about-me', component: _about2.default })
+      _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/about-me', component: _about2.default }),
+      _react2.default.createElement(_reactRouterDom.Route, { component: _easypage2.default })
     )
   );
 };
