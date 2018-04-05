@@ -1,45 +1,46 @@
+const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
     output: {
-        path: path.resolve('publish'),
+        path: path.resolve('bundle'),
         filename: 'index_bundle.js'
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx', 'index.js', 'index.jsx', '.json', '.css', 'index.json'],
+        modules: [path.resolve('./src'), "node_modules"],
     },
     module: {
         rules: [
-            { 
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: { loader: 'babel-loader'}
-                
-            }, { 
-                test: /\.jsx$/, 
+                use: { loader: 'babel-loader' }
+
+            }, {
+                test: /\.jsx$/,
                 exclude: /node_modules/,
                 use: { loader: 'babel-loader' }
             }, {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract([{
+                use: [{
                     loader: "style-loader"
-                }, {
-                    loader: "css-loader",
-                    options: {
-                        modules: true
-                    }
                 }
-                ])
+                    , {
+                    loader: 'css-loader',
+                }
+                ]
             }
-        ]
+        ],
     },
     plugins: [
         new HtmlWebpackPlugin({
             hash: true,
             template: 'index.template.html',
             filename: 'index.html', //relative to root of the application
-            inject: "body"
+            inject: 'body'
         }),
-        new ExtractTextPlugin('styles.css')
     ]
 }

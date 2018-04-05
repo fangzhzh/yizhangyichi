@@ -2,10 +2,10 @@ import React from 'react'
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Home from 'components/home/index'
+import Busy from 'components/busy/busy'
 
 const mapStateToProps = state => ({
 })
 
-const HomePage = connect(mapStateToProps)(Home);
-export default HomePage;
+const BusyPage = connect(mapStateToProps)(Busy);
+export default BusyPage;
