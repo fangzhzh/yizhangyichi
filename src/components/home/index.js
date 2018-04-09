@@ -1,6 +1,8 @@
-import React from 'react'
-import { Layout, Input, Button, List, Icon } from "antd";
-import firestore from "firebase/firestore";
+import React from 'react';
+import { Layout } from 'antd';
+import firestore from 'firebase/firestore';
+import TodoPage from 'containers/todo';
+import PropTypes from 'prop-types';
 import 'components/home/home.css';
 
 const { Header, Footer, Content } = Layout;
@@ -9,36 +11,34 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     // Set the default state of our application
-    this.state = { addingTodo: false, pendingTodo: "", todos: [] };
+    this.state = { addingTodo: false, pendingTodo: '', todos: [] };
     // We want event handlers to share this context
     this.addTodo = this.addTodo.bind(this);
     this.completeTodo = this.completeTodo.bind(this);
     // We listen for live changes to our todos collection in Firebase
-    firestore.collection("todos").onSnapshot(snapshot => {
-      let todos = [];
-      snapshot.forEach(doc => {
+    firestore.collection(this.props.todoPath).onSnapshot((snapshot) => {
+      const todos = [];
+      snapshot.forEach((doc) => {
         const todo = doc.data();
         todo.id = doc.id;
         if (!todo.completed) todos.push(todo);
       });
       // Sort our todos based on time added
-      todos.sort(function (a, b) {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      });
+      todos.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
       // Anytime the state of our database changes, we update state
       this.setState({ todos });
     });
+    this.completeTodo = this.completeTodo.bind(this);
+    this.addTodo = this.addTodo.bind(this);
   }
 
   async completeTodo(id) {
     // Mark the todo as completed
     await firestore
-      .collection("todos")
+      .collection(COLLECTION)
       .doc(id)
       .set({
-        completed: true
+        completed: true,
       });
   }
 
@@ -47,13 +47,13 @@ export default class Home extends React.Component {
     // Set a flag to indicate loading
     this.setState({ addingTodo: true });
     // Add a new todo from the value of the input
-    await firestore.collection("todos").add({
+    await firestore.collection(COLLECTION).add({
       content: this.state.pendingTodo,
       completed: false,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     });
     // Remove the loading flag and clear the input
-    this.setState({ addingTodo: false, pendingTodo: "" });
+    this.setState({ addingTodo: false, pendingTodo: '' });
   }
 
   render() {
@@ -63,41 +63,10 @@ export default class Home extends React.Component {
           <h1>Quick Todo</h1>
         </Header>
         <Content className="App-content">
-          <Input
-            ref="add-todo-input"
-            className="App-add-todo-input"
-            size="large"
-            placeholder="What needs to be done?"
-            disabled={this.state.addingTodo}
-            onChange={evt => this.setState({ pendingTodo: evt.target.value })}
-            value={this.state.pendingTodo}
-            onPressEnter={this.addTodo}
-            required
-          />
-          <Button
-            className="App-add-todo-button"
-            size="large"
-            type="primary"
-            onClick={this.addTodo}
-            loading={this.state.addingTodo}
-          >
-            Add Todo
-          </Button>
-          <List
-            className="App-todos"
-            size="large"
-            bordered
-            dataSource={this.state.todos}
-            renderItem={todo => (
-              <List.Item>
-                {todo.content}
-                <Icon
-                  onClick={evt => this.completeTodo(todo.id)}
-                  className="App-todo-complete"
-                  type="check"
-                />
-              </List.Item>
-            )}
+          <TodoPage
+            todos={this.state.todos}
+            addTodo={this.addTodo}
+            completeTodo={this.completeTodo}
           />
         </Content>
         <Footer className="App-footer">&copy; My Company</Footer>
@@ -105,3 +74,11 @@ export default class Home extends React.Component {
     );
   }
 }
+
+Home.propTypes = {
+  todoPath: PropTypes.string,
+};
+
+Home.defaultProps = {
+  todoPath: '',
+};

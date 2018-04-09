@@ -1,11 +1,12 @@
-import React from 'react'
-import { push } from 'react-router-redux'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import Easy from 'components/easy/easy'
+import React from 'react';
+import { push } from 'react-router-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Home from 'components/home';
 
 const mapStateToProps = state => ({
-})
+  todoPath: 'yizhangyichi/chi/todos',
+});
 
-const EasyPage = connect(mapStateToProps)(Easy);
+const EasyPage = connect(mapStateToProps)(Home);
 export default EasyPage;
