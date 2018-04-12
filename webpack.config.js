@@ -8,6 +8,9 @@ module.exports = {
         path: path.resolve('build'),
         filename: 'index_bundle.js'
     },
+    devServer: {
+      historyApiFallback: true,
+    },
     resolve: {
         extensions: ['*', '.js', '.jsx', 'index.js', 'index.jsx', '.json', '.css', 'index.json'],
         modules: [path.resolve('./src'), "node_modules"],
