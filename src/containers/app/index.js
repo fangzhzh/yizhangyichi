@@ -1,17 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
-import BusyPage from '../busy/busypage'
-import EasyPage from '../easy/easypage'
-import HomePage from '../home'
-import About from '../about'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import BusyPage from '../busy/busypage';
+import EasyPage from '../easy/easypage';
+import HomePage from '../home';
+import About from '../about';
+
 const App = () => (
   <Router>
     <div>
       <header>
-        <Link className="link" to="/">Home</Link>
-        <Link className="link" to="/zhang">张</Link>
-        <Link className="link" to="/chi">弛</Link>
-        <Link className="link" to="/about-me">About</Link>
+        <Link className="link" to="/">
+          Home
+        </Link>
+        <Link className="link" to="/zhang">
+          张
+        </Link>
+        <Link className="link" to="/chi">
+          弛
+        </Link>
+        <Link className="link" to="/about-me">
+          About
+        </Link>
       </header>
       <main>
         <Switch>
@@ -24,6 +33,6 @@ const App = () => (
       </main>
     </div>
   </Router>
-)
+);
 
-export default App
+export default App;

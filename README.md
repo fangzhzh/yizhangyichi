@@ -20,3 +20,10 @@ yarn start
 ```
 
 This boilerplate is built using [create-react-app](https://github.com/facebookincubator/create-react-app) so you will want to read the User Guide for more goodies.
+
+## eslint
+
+```
+yarn add eslint-config-airbnb-base eslint eslint-plugin-import
+yarn add babel-eslint eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-prettier eslint-plugin-react prettier-eslint prettier -D
+```
