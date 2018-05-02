@@ -1,11 +1,13 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import firestore from 'firebase/firestore';
 import TodoPage from 'containers/todo';
 import PropTypes from 'prop-types';
 import 'components/home/home.css';
 
-const { Header, Footer, Content } = Layout;
+const {
+  Header, Footer, Content, Sider,
+} = Layout;
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -35,7 +37,7 @@ export default class Home extends React.Component {
   async completeTodo(id) {
     // Mark the todo as completed
     await firestore
-      .collection(COLLECTION)
+      .collection(this.props.todoPath)
       .doc(id)
       .set({
         completed: true,
@@ -59,17 +61,36 @@ export default class Home extends React.Component {
   render() {
     return (
       <Layout className="App">
-        <Header className="App-header">
-          <h1>Quick Todo</h1>
-        </Header>
-        <Content className="App-content">
-          <TodoPage
-            todos={this.state.todos}
-            addTodo={this.addTodo}
-            completeTodo={this.completeTodo}
-          />
-        </Content>
-        <Footer className="App-footer">&copy; My Company</Footer>
+        <Sider className="App-sider">
+          <div className="App-logo" />
+          <Menu theme="dark" mode="inline">
+            <Menu.Item key="1">
+              <Icon type="user" />
+              <span className="nav-text">nav 1</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Icon type="video-camera" />
+              <span className="nav-text">nav 2</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="upload" />
+              <span className="nav-text">nav 3</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header className="App-header">
+            <h1>Quick Todo</h1>
+          </Header>
+          <Content className="App-content">
+            <TodoPage
+              todos={this.state.todos}
+              addTodo={this.addTodo}
+              completeTodo={this.completeTodo}
+            />
+          </Content>
+          <Footer className="App-footer">&copy; My Company</Footer>
+        </Layout>
       </Layout>
     );
   }

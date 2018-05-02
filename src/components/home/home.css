@@ -10,3 +10,17 @@
   padding-top: 100px;
   padding-bottom: 100px;
 }
+
+.App-sider {
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  text-align: left;
+}
+
+.App-logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
