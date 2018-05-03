@@ -2,25 +2,41 @@
   text-align: center;
 }
 
-.App-header h1 {
+.App__container {
+
+}
+.App__header{
+  display: grid;
+  grid-template-columns: 45px auto auto;
+}
+.App__header--h1 {
   color: whitesmoke;
+  margin: 0px;
 }
 
-.App-content {
+.App__content {
   padding-top: 100px;
   padding-bottom: 100px;
 }
 
-.App-sider {
+.App__sider {
   overflow: auto;
   height: 100vh;
-  position: fixed;
   left: 0;
   text-align: left;
 }
 
-.App-logo {
+.App__logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
+}
+
+.App__breadcrumb {
+  margin: 16px;
+  text-align: left;
+}
+
+.App__nav-menu {
+  display: none;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Breadcrumb } from 'antd';
 import firestore from 'firebase/firestore';
 import TodoPage from 'containers/todo';
 import PropTypes from 'prop-types';
@@ -60,36 +60,55 @@ export default class Home extends React.Component {
 
   render() {
     return (
-      <Layout className="App">
-        <Sider className="App-sider">
-          <div className="App-logo" />
-          <Menu theme="dark" mode="inline">
-            <Menu.Item key="1">
-              <Icon type="user" />
-              <span className="nav-text">nav 1</span>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Icon type="video-camera" />
-              <span className="nav-text">nav 2</span>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span className="nav-text">nav 3</span>
-            </Menu.Item>
+      <Layout className="App__container">
+        <Header className="App__header">
+          <div className="logo" />
+          <h1 className="App__header--h1">Todo</h1>
+          <Menu
+            className="App__nav-menu"
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={['2']}
+            style={{ lineHeight: '64px' }}
+          >
+            <Menu.Item key="1">nav 1</Menu.Item>
+            <Menu.Item key="2">nav 2</Menu.Item>
+            <Menu.Item key="3">nav 3</Menu.Item>
           </Menu>
-        </Sider>
-        <Layout>
-          <Header className="App-header">
-            <h1>Quick Todo</h1>
-          </Header>
-          <Content className="App-content">
-            <TodoPage
-              todos={this.state.todos}
-              addTodo={this.addTodo}
-              completeTodo={this.completeTodo}
-            />
-          </Content>
-          <Footer className="App-footer">&copy; My Company</Footer>
+        </Header>
+        <Layout className="App">
+          <Sider className="App__sider">
+            <div className="App__logo" />
+            <Menu theme="dark" mode="inline">
+              <Menu.Item key="1">
+                <Icon type="user" />
+                <span className="nav-text">nav 1</span>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <Icon type="video-camera" />
+                <span className="nav-text">nav 2</span>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Icon type="upload" />
+                <span className="nav-text">nav 3</span>
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          <Layout>
+            <Breadcrumb className="App__breadcrumb">
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>List</Breadcrumb.Item>
+              <Breadcrumb.Item>App</Breadcrumb.Item>
+            </Breadcrumb>
+            <Content className="App__content">
+              <TodoPage
+                todos={this.state.todos}
+                addTodo={this.addTodo}
+                completeTodo={this.completeTodo}
+              />
+            </Content>
+            <Footer className="App__footer">&copy; My Company</Footer>
+          </Layout>
         </Layout>
       </Layout>
     );
