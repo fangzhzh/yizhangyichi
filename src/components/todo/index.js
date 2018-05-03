@@ -4,6 +4,14 @@ import { Input, Button, List, Icon } from 'antd';
 import 'components/todo/todo.css';
 
 export default class Todo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { pendingTodo: '' };
+    this.addTodo = this.addTodo.bind(this);
+  }
+  addTodo() {
+    this.props.addTodo(this.state.pendingTodo);
+  }
   render() {
     return (
       <div>
@@ -12,8 +20,8 @@ export default class Todo extends React.Component {
           size="large"
           placeholder="What needs to be done?"
           disabled={this.props.addingTodo}
-          onChange={() => {}}
-          value={this.props.pendingTodo}
+          onChange={evt => this.setState({ pendingTodo: evt.target.value })}
+          value={this.state.pendingTodo}
           onPressEnter={this.addTodo}
           required
         />
@@ -21,7 +29,7 @@ export default class Todo extends React.Component {
           className="Todo-add-todo-button"
           size="large"
           type="primary"
-          onClick={this.props.addTodo}
+          onClick={this.addTodo}
           loading={this.props.addingTodo}
         >
           Add Todo
@@ -51,10 +59,12 @@ Todo.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({ content: PropTypes.string, id: PropTypes.string })),
   addTodo: PropTypes.func,
   completeTodo: PropTypes.func,
+  addingTodo: PropTypes.bool,
 };
 
 Todo.defaultProps = {
   todos: [],
   addTodo: () => {},
   completeTodo: () => {},
+  addingTodo: false,
 };

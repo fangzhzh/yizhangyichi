@@ -13,10 +13,8 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     // Set the default state of our application
-    this.state = { addingTodo: false, pendingTodo: '', todos: [] };
+    this.state = { addingTodo: false, todos: [] };
     // We want event handlers to share this context
-    this.addTodo = this.addTodo.bind(this);
-    this.completeTodo = this.completeTodo.bind(this);
     // We listen for live changes to our todos collection in Firebase
     firestore.collection(this.props.todoPath).onSnapshot((snapshot) => {
       const todos = [];
@@ -44,18 +42,17 @@ export default class Home extends React.Component {
       });
   }
 
-  async addTodo() {
-    if (!this.state.pendingTodo) return;
+  async addTodo(pendingTodo) {
     // Set a flag to indicate loading
     this.setState({ addingTodo: true });
     // Add a new todo from the value of the input
-    await firestore.collection(COLLECTION).add({
-      content: this.state.pendingTodo,
+    await firestore.collection(this.props.todoPath).add({
+      content: pendingTodo,
       completed: false,
       createdAt: new Date().toISOString(),
     });
     // Remove the loading flag and clear the input
-    this.setState({ addingTodo: false, pendingTodo: '' });
+    this.setState({ addingTodo: false });
   }
 
   render() {
@@ -105,6 +102,7 @@ export default class Home extends React.Component {
                 todos={this.state.todos}
                 addTodo={this.addTodo}
                 completeTodo={this.completeTodo}
+                addingTodo={this.state.addingTodo}
               />
             </Content>
             <Footer className="App__footer">&copy; My Company</Footer>
