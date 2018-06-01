@@ -7409,12 +7409,6 @@ react-error-overlay@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-3.0.0.tgz#c2bc8f4d91f1375b3dad6d75265d51cd5eeaf655"
 
-react-firebaseui@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-firebaseui/-/react-firebaseui-3.0.4.tgz#faeef2cee1aa681d832ffd9d28fdf69789b2abf2"
-  dependencies:
-    firebaseui "^3.0.0"
-
 react-lazy-load@^3.0.12:
   version "3.0.13"
   resolved "https://registry.yarnpkg.com/react-lazy-load/-/react-lazy-load-3.0.13.tgz#3b0a92d336d43d3f0d73cbe6f35b17050b08b824"

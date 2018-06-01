@@ -1,34 +1,56 @@
 import React from 'react';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from 'firebase';
+import { auth } from 'firebase';
+import firebaseui from 'firebaseui';
 import './login.css';
 
-const config = {
-  apiKey: 'AIzaSyBVctIzfUAsFWGaREyKO34sEsclnRgDMB0',
-  authDomain: 'yizhangyichi-dev.firebaseapp.com',
-  databaseURL: 'https://yizhangyichi-dev.firebaseio.com',
-  projectId: 'yizhangyichi-dev',
-  storageBucket: 'yizhangyichi-dev.appspot.com',
-  messagingSenderId: '994409866375',
-};
-
-const uiConfig = {
-  // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
-  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/easy',
-  // We will display Google and Facebook as auth providers.
-  signInOptions: [
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-  ],
-};
-
 export default class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.ui = new firebaseui.auth.AuthUI(auth());
+    this.setup();
+  }
+  componentDidMount() {}
+
+  componentWillUnmount() {
+    this.ui.reset();
+  }
+
+  setup() {
+    const uiConfig = {
+      signInSuccessUrl: '/easy',
+      callbacks: {
+        signInSuccessWithAuthResult(authResult, redirectUrl) {
+          return true;
+        },
+      },
+      signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        {
+          provider: auth.GoogleAuthProvider.PROVIDER_ID,
+          scopes: ['https://www.googleapis.com/auth/plus.login'],
+          customParameters: {
+            // Forces account selection even when one account
+            // is available.
+            prompt: 'select_account',
+          },
+        },
+        // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+        // firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        // firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        // firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+      ],
+    };
+
+    // Initialize the FirebaseUI Widget using Firebase.
+    // The start method will wait until the DOM is loaded.
+    this.ui.start('#firebaseui-auth-container', uiConfig);
+  }
+
   render() {
     return (
       <div className="login">
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        <div id="firebaseui-auth-container" />
       </div>
     );
   }

@@ -27,3 +27,16 @@ This boilerplate is built using [create-react-app](https://github.com/facebookin
 yarn add eslint-config-airbnb-base eslint eslint-plugin-import
 yarn add babel-eslint eslint-config-airbnb eslint-plugin-jsx-a11y eslint-plugin-prettier eslint-plugin-react prettier-eslint prettier -D
 ```
+
+## problem and thinking
+- firebaseui or not
+We have two choices, firebaseui and oauth2 api.
+  + firebaseui
+    - advantage: google library, easy to use, easy to integrate
+    - disadvange: 
+      + black box
+  + oauth2
+    - fully control the token refresh
+    - need to write a log of code to take care of the token and refresh
+  
+
