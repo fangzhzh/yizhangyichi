@@ -1,22 +1,37 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'react-router-redux';
-import store, { history } from './store';
-import App from './containers/app';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import UserContext from 'userContext';
+import store from './store';
+import App from './components/app';
 
 import 'sanitize.css/sanitize.css';
 import './index.css';
 
 const target = document.getElementById('root');
-
+const state = {
+  googleAccessToken: sessionStorage.getItem('accessToken'),
+  accessToken: '',
+  todos: '',
+  setGoogleAccessToken: (accessToken) => {
+    console.log('Index accessToken', accessToken);
+    sessionStorage.setItem('accessToken', accessToken);
+    state.setGoogleAccessToken = accessToken;
+  },
+  setAccessToken: (accessToken) => {
+    state.accessToken = accessToken;
+  },
+};
 render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <div>
-        <App />
-      </div>
-    </ConnectedRouter>
+    <Router>
+      <UserContext.Provider value={state}>
+        <div>
+          <App />
+        </div>
+      </UserContext.Provider>
+    </Router>
   </Provider>,
   target,
 );

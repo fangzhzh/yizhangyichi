@@ -1,7 +1,8 @@
 import React from 'react';
 import { Layout, Menu, Icon, Breadcrumb } from 'antd';
 import firestore from 'firebase/firestore';
-import TodoPage from 'containers/todo';
+import Todo from 'components/todo';
+import UserContext from 'userContext';
 import PropTypes from 'prop-types';
 import 'components/home/home.css';
 
@@ -9,7 +10,7 @@ const {
   Header, Footer, Content, Sider,
 } = Layout;
 
-export default class Home extends React.Component {
+class Home extends React.Component {
   constructor(props) {
     super(props);
     // Set the default state of our application
@@ -56,11 +57,12 @@ export default class Home extends React.Component {
   }
 
   render() {
+    console.log(this, 'render', this.props);
     return (
       <Layout className="App__container">
         <Header className="App__header">
           <div className="logo" />
-          <h1 className="App__header--h1">Todo</h1>
+          <h1 className="App__header--h1">Todo {this.props.tokens.googleAccessToken}</h1>
           <Menu
             className="App__nav-menu"
             theme="dark"
@@ -98,7 +100,7 @@ export default class Home extends React.Component {
               <Breadcrumb.Item>App</Breadcrumb.Item>
             </Breadcrumb>
             <Content className="App__content">
-              <TodoPage
+              <Todo
                 todos={this.state.todos}
                 addTodo={this.addTodo}
                 completeTodo={this.completeTodo}
@@ -112,6 +114,12 @@ export default class Home extends React.Component {
     );
   }
 }
+
+export default React.forwardRef((props, ref) => (
+  <UserContext.Consumer>
+    {tokens => <Home {...props} tokens={tokens} ref={ref} />}
+  </UserContext.Consumer>
+));
 
 Home.propTypes = {
   todoPath: PropTypes.string,
