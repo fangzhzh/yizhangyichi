@@ -1,38 +1,52 @@
 import React from 'react';
-import { auth } from 'firebase';
-// import firebaseui from 'firebaseui';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import UserContext from 'userContext';
 import PropTypes from 'prop-types';
+import firebase from 'firebase';
 import './login.css';
+import withToken from '../withToken';
 
-export default class Login extends React.PureComponent {
+class Login extends React.PureComponent {
+  static propTypes = {
+    setGoogleAccessToken: PropTypes.func,
+    history: PropTypes.func,
+    location: PropTypes.func,
+  };
+
+  static defaultProps = {
+    setGoogleAccessToken: () => {},
+    history: () => {},
+    location: () => {},
+  };
+
   constructor(props) {
     super(props);
     this.getUIConfig = this.getUIConfig.bind(this);
   }
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log(this, 'shouldComponentUpdate', nextState);
-  //   if (nextProps.location.pathname !== nextState.location.pathname) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
+  componentDidMount() {
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
+      console.log(JSON.stringify(this.props), 'componentDidMount', JSON.stringify(user));
+      const { history, setGoogleAccessToken } = this.props;
+      if (user) {
+        const { stsTokenManager } = JSON.parse(JSON.stringify(user));
+        setGoogleAccessToken(stsTokenManager.accessToken);
+        history.push('/chi');
+        history.go('/chi');
+      }
+    });
+  }
+
+  // Make sure we un-register Firebase observers when the component unmounts.
+  componentWillUnmount() {
+    this.unregisterAuthObserver();
+  }
   getUIConfig(setGoogleAccessToken) {
     const { history, location } = this.props;
     return {
       signInFlow: 'popup',
       signInSuccessUrl: '/chi',
       callbacks: {
-        signInSuccessWithAuthResult(authResult, redirectUrl) {
-          console.log(
-            'Login signInSuccessWithAuthResult',
-            authResult,
-            history,
-            ' current location',
-            location,
-          );
+        signInSuccessWithAuthResult(authResult) {
           const { accessToken } = authResult.credential;
           console.log(
             'Login signInSuccessWithAuthResult after history push',
@@ -48,7 +62,7 @@ export default class Login extends React.PureComponent {
       signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
         {
-          provider: auth.GoogleAuthProvider.PROVIDER_ID,
+          provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
           scopes: ['https://www.googleapis.com/auth/plus.login'],
           customParameters: {
             // Forces account selection even when one account
@@ -66,21 +80,19 @@ export default class Login extends React.PureComponent {
   }
 
   render() {
-    console.log(this, 'render', this.props);
+    const { setGoogleAccessToken } = this.props;
     return (
-      <UserContext.Consumer>
-        {({ setGoogleAccessToken }) => (
-          <div className="login">
-            <img className="bg" alt="background" />
-            <div className="middle">
-              <StyledFirebaseAuth
-                uiConfig={this.getUIConfig(setGoogleAccessToken)}
-                firebaseAuth={auth()}
-              />
-            </div>
-          </div>
-        )}
-      </UserContext.Consumer>
+      <div className="login">
+        <img className="bg" alt="background" />
+        <div className="middle">
+          <StyledFirebaseAuth
+            uiConfig={this.getUIConfig(setGoogleAccessToken)}
+            firebaseAuth={firebase.auth()}
+          />
+        </div>
+      </div>
     );
   }
 }
+
+export default withToken(Login);

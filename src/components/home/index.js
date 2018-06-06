@@ -5,12 +5,24 @@ import Todo from 'components/todo';
 import UserContext from 'userContext';
 import PropTypes from 'prop-types';
 import 'components/home/home.css';
+import withToken from '../withToken';
 
 const {
   Header, Footer, Content, Sider,
 } = Layout;
 
 class Home extends React.Component {
+  static propTypes = {
+    accessToken: PropTypes.string,
+    googleAccessToken: PropTypes.string,
+    todoPath: PropTypes.string,
+  }
+
+  static defaultProps = {
+    accessToken: '',
+    googleAccessToken: '',
+    todoPath: '',
+  }
   constructor(props) {
     super(props);
     // Set the default state of our application
@@ -31,6 +43,14 @@ class Home extends React.Component {
     });
     this.completeTodo = this.completeTodo.bind(this);
     this.addTodo = this.addTodo.bind(this);
+  }
+
+  componentDidMount() {
+    if (!this.props.accessToken) {
+      console.log(`${this} componentDidMount accessToken empty`);
+      localStorage.clear();
+      // this.props.history.push("/login");
+    }
   }
 
   async completeTodo(id) {
@@ -62,7 +82,7 @@ class Home extends React.Component {
       <Layout className="App__container">
         <Header className="App__header">
           <div className="logo" />
-          <h1 className="App__header--h1">Todo {this.props.tokens.googleAccessToken}</h1>
+          <h1 className="App__header--h1">Todo {this.props.googleAccessToken}</h1>
           <Menu
             className="App__nav-menu"
             theme="dark"
@@ -115,16 +135,4 @@ class Home extends React.Component {
   }
 }
 
-export default React.forwardRef((props, ref) => (
-  <UserContext.Consumer>
-    {tokens => <Home {...props} tokens={tokens} ref={ref} />}
-  </UserContext.Consumer>
-));
-
-Home.propTypes = {
-  todoPath: PropTypes.string,
-};
-
-Home.defaultProps = {
-  todoPath: '',
-};
+export default withToken(Home);

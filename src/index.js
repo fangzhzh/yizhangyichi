@@ -11,18 +11,21 @@ import './index.css';
 
 const target = document.getElementById('root');
 const state = {
-  googleAccessToken: sessionStorage.getItem('accessToken'),
+  googleAccessToken: localStorage.getItem('accessToken'),
   accessToken: '',
   todos: '',
   setGoogleAccessToken: (accessToken) => {
-    console.log('Index accessToken', accessToken);
-    sessionStorage.setItem('accessToken', accessToken);
-    state.setGoogleAccessToken = accessToken;
+    if (accessToken && accessToken !== localStorage.getItem('accessToken')) {
+      console.log('context api set new accessToken: ', accessToken.slice(-5));
+      localStorage.setItem('accessToken', accessToken);
+      state.setGoogleAccessToken = accessToken;
+    }
   },
   setAccessToken: (accessToken) => {
     state.accessToken = accessToken;
   },
 };
+
 render(
   <Provider store={store}>
     <Router>
