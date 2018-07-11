@@ -2,10 +2,10 @@ import React from 'react';
 import { Layout, Menu, Icon, Breadcrumb } from 'antd';
 import firestore from 'firebase/firestore';
 import Todo from 'components/todo';
-import UserContext from 'userContext';
 import PropTypes from 'prop-types';
 import 'components/home/home.css';
-import withToken from '../withToken';
+import withToken from 'hocs/withToken';
+import withTodo from 'hocs/withTodo';
 
 const {
   Header, Footer, Content, Sider,
@@ -29,6 +29,19 @@ class Home extends React.Component {
     this.state = { addingTodo: false, todos: [] };
     // We want event handlers to share this context
     // We listen for live changes to our todos collection in Firebase
+    
+    this.completeTodo = this.completeTodo.bind(this);
+    this.addTodo = this.addTodo.bind(this);
+  }
+
+  componentDidMount() {
+    if (!this.props.accessToken) {
+      console.log(`${this} componentDidMount accessToken empty`);
+      localStorage.clear();
+      this.props.history.push("/login");
+      return;
+    }
+          /*    
     firestore.collection(this.props.todoPath).onSnapshot((snapshot) => {
       const todos = [];
       snapshot.forEach((doc) => {
@@ -41,16 +54,7 @@ class Home extends React.Component {
       // Anytime the state of our database changes, we update state
       this.setState({ todos });
     });
-    this.completeTodo = this.completeTodo.bind(this);
-    this.addTodo = this.addTodo.bind(this);
-  }
-
-  componentDidMount() {
-    if (!this.props.accessToken) {
-      console.log(`${this} componentDidMount accessToken empty`);
-      localStorage.clear();
-      // this.props.history.push("/login");
-    }
+    */
   }
 
   async completeTodo(id) {
@@ -135,4 +139,4 @@ class Home extends React.Component {
   }
 }
 
-export default withToken(Home);
+export default withTodo(withToken(Home), DataSource => DataSource.getTodos());

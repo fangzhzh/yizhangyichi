@@ -12,7 +12,7 @@ import './index.css';
 const target = document.getElementById('root');
 const state = {
   googleAccessToken: localStorage.getItem('accessToken'),
-  accessToken: '',
+  accessToken: localStorage.getItem('accessToken'),
   todos: '',
   setGoogleAccessToken: (accessToken) => {
     if (accessToken && accessToken !== localStorage.getItem('accessToken')) {

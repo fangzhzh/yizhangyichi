@@ -3,19 +3,19 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import './login.css';
-import withToken from '../withToken';
+import withToken from 'hocs/withToken';
 
 class Login extends React.PureComponent {
   static propTypes = {
     setGoogleAccessToken: PropTypes.func,
     history: PropTypes.func,
-    location: PropTypes.func,
+    location: PropTypes.shape(),
   };
 
   static defaultProps = {
     setGoogleAccessToken: () => {},
     history: () => {},
-    location: () => {},
+    location: {},
   };
 
   constructor(props) {
