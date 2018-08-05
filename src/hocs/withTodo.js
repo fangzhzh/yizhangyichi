@@ -1,8 +1,9 @@
 import React from 'react';
 import DataSource from 'store/datasource';
+import TodoContext from 'store/todoContext';
 
-export default function withTodos(WrappedComponent, selectData) {
-  return class extends React.Component {
+export default function withTodo(WrappedComponent, selectData) {
+  return class WrapperComponent extends React.Component {
     constructor(props) {
       super(props);
       this.handleTodoChange = this.handleTodoChange.bind(this);
@@ -12,7 +13,6 @@ export default function withTodos(WrappedComponent, selectData) {
     }
 
     componentDidMount() {
-      // fetch data
       DataSource.addTodoListener(this.handleTodoChange);
     }
     componentWillUnmount() {
@@ -24,7 +24,11 @@ export default function withTodos(WrappedComponent, selectData) {
     };
 
     render() {
-      return <WrappedComponent todos={this.state.data} {...this.props} />;
+      return (
+        <TodoContext.Provider value={this.state.data}>
+          <WrappedComponent todos={this.state.data} {...this.props} />;
+        </TodoContext.Provider>
+      );
     }
   };
 }

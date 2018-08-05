@@ -3,9 +3,8 @@ import React from 'react';
 const user = {
   googleAccessToken: '',
   accessToken: '',
-  todos: [],
   setGoogleAccessToken: () => {},
-  setAccessToken: () => { },
+  setAccessToken: () => {},
 };
 
 const UserContext = React.createContext(user);

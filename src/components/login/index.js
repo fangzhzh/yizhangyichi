@@ -2,8 +2,8 @@ import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
-import './login.css';
 import withToken from 'hocs/withToken';
+import './login.css';
 
 class Login extends React.PureComponent {
   static propTypes = {
