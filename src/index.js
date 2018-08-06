@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import UserContext from 'store/userContext';
 import 'sanitize.css/sanitize.css';
+import { ConnectedRouter } from 'connected-react-router';
 import store from './store';
 import App from './components/app';
 
@@ -27,13 +27,13 @@ const state = {
 
 render(
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={store.history}>
       <UserContext.Provider value={state}>
         <div>
           <App />
         </div>
       </UserContext.Provider>
-    </Router>
+    </ConnectedRouter>
   </Provider>,
   target,
 );

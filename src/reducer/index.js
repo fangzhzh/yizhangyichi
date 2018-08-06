@@ -1,7 +1,18 @@
 import { combineReducers } from 'redux';
-// import { routerReducer } from 'react-router-redux';
-// import { cardGameReducer } from './cardGame';
+
+function createReducer(initialState, handlers) {
+  return function reducer(state = initialState, action) {
+    if (handlers.hasOwnProperty(action.type)) {
+      return handlers[action.type](state, action);
+    }
+    return state;
+  };
+}
+
+const todoReducer = createReducer([], {
+  LOAD_TODO: (state, action) => state,
+});
 
 export default combineReducers({
-  // router: routerReducer,
+  todo: todoReducer,
 });

@@ -19,7 +19,7 @@ function* fetchTodo() {
 */
 function* mySaga() {
   yield takeEvery('USER_FETCH_REQUESTED', fetchUser);
-  yield takeEvery('', fetchTodo);
+  yield takeEvery('TODOS', fetchTodo);
 }
 
 export default mySaga;
