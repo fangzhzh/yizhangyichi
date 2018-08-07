@@ -23,6 +23,7 @@
     "babel-plugin-import": "^1.6.5",
     "babel-polyfill": "^6.26.0",
     "babel-preset-stage-0": "^6.24.1",
+    "bluebird": "^3.5.1",
     "connected-react-router": "^4.3.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -54,7 +55,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "dev":
-      "cross-env NODE_ENV=development webpack-dev-server --progress --colors --watch  --history-api-fallback --host 0.0.0.0 --port 8080",
+      "cross-env NODE_ENV=development webpack-dev-server --progress --colors --watch  --history-api-fallback --port 8080",
     "start": "webpack-dev-server",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "test": "react-scripts test --env=jsdom",

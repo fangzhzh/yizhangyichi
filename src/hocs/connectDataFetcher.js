@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Promise from 'bluebird';
 
 export default function connectDataFetchers(Component, actionCreators) {
-  console.log('connectDataFetchers', Component, actionCreators);
   return class DataFetcherWrapper extends React.Component {
     static propTypes = {
       dispatch: PropTypes.func.isRequired,
